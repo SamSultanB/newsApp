@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainPageFragment">
+    android:background="@color/main_background"
+    tools:context=".views.fragments.MainPageFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,6 +18,7 @@
         android:textSize="24sp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -26,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:background="@color/white"
+            android:background="@color/main_background"
             android:src="@drawable/refresh_btn_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +41,8 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            app:queryHint="Search..."
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/favoritesBtn"
             app:layout_constraintStart_toEndOf="@+id/refreshBtn"
@@ -52,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
-            android:background="@color/white"
+            android:background="@color/main_background"
             android:src="@drawable/favorite_btn_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

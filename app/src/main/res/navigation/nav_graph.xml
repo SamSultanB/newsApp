@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/archivesFragment"
-        android:name="sam.sultan.newsapp.ArchivesFragment"
+        android:name="sam.sultan.newsapp.views.fragments.ArchivesFragment"
         android:label="fragment_archives"
         tools:layout="@layout/fragment_archives" />
     <fragment
         android:id="@+id/mainPageFragment"
-        android:name="sam.sultan.newsapp.MainPageFragment"
+        android:name="sam.sultan.newsapp.views.fragments.MainPageFragment"
         android:label="fragment_main_page"
         tools:layout="@layout/fragment_main_page" />
 
