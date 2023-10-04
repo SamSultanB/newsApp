@@ -1,10 +1,10 @@
-package sam.sultan.newsapp
+package sam.sultan.newsapp.views.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import sam.sultan.newsapp.R
 import sam.sultan.newsapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
