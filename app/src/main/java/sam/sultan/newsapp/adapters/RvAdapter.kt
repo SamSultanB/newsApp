@@ -13,6 +13,8 @@ class RvAdapter: RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
 
     private var newsList: List<Article> = emptyList();
 
+    var clickToDetails: ((Article)->Unit)? = null
+
 
     inner class RvViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var binding = RvItemBinding.bind(itemView)
@@ -37,6 +39,7 @@ class RvAdapter: RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
 
     override fun onBindViewHolder(holder: RvViewHolder, position: Int) {
         holder.bind(newsList[position])
+        holder.binding.newsTitle.setOnClickListener { clickToDetails?.invoke(newsList[position]) }
     }
 
     fun setNewsList(newList: List<Article>){
