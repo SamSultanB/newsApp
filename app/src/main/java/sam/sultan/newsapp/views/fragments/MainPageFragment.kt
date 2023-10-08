@@ -1,18 +1,24 @@
 package sam.sultan.newsapp.views.fragments
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import sam.sultan.newsapp.R
 import sam.sultan.newsapp.adapters.RvAdapter
-import sam.sultan.newsapp.databinding.ActivityMainBinding
 import sam.sultan.newsapp.databinding.FragmentMainPageBinding
 import sam.sultan.newsapp.models.entities.Article
 import sam.sultan.newsapp.models.viewModels.NewsViewModel
+import sam.sultan.newsapp.utils.Resource
 
 
 class MainPageFragment : Fragment() {
@@ -32,13 +38,56 @@ class MainPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        var test = listOf<Article>(Article(1, "author", "contentContnent", "fjsafjsfs", "3434", "jfsj",  "fd", "lflf", 1),
-//            Article(1, "author", "contentContnent", "fjsafjsfs", "3434", "jfsj",  "fd", "lflf", 1))
 
-        viewModel.news.observe(viewLifecycleOwner, Observer {
-            adapter.setNewsList(it.articles)
-        })
+        if(isNetworkConnected(requireContext())){
+            viewModel.getAllNews()
+        }else{
+            Toast.makeText(requireContext(), "Please, connect to the Internet", Toast.LENGTH_LONG).show()
+        }
+
+        getNews()
         binding.mainRv.layoutManager = LinearLayoutManager(requireContext())
         binding.mainRv.adapter = adapter
+        adapter.clickToDetails = { detailsPage(it) }
+    }
+
+    private fun detailsPage(article: Article){
+        var bundle = Bundle();
+        bundle.putSerializable("article", article)
+        findNavController().navigate(R.id.action_mainPageFragment_to_detailsFragment, bundle)
+    }
+
+
+
+    private fun getNews(){
+        viewModel.news.observe(viewLifecycleOwner, Observer {
+            showProgressBar()
+            if(it is Resource.Success){
+                hideProgressBar()
+                it.data?.articles?.let { it1 -> adapter.setNewsList(it1) }
+            }else if(it is Resource.Error){
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun showProgressBar(){
+        binding.mainRv.visibility = View.GONE
+        binding.progressBar3.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar(){
+        binding.mainRv.visibility = View.VISIBLE
+        binding.progressBar3.visibility = View.GONE
+    }
+
+    private fun isNetworkConnected(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+
+        return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
     }
 }

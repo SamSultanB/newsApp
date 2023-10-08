@@ -7,7 +7,7 @@ import androidx.navigation.ui.setupWithNavController
 import sam.sultan.newsapp.R
 import sam.sultan.newsapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     lateinit var binding:ActivityMainBinding
 
@@ -19,4 +19,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController.navController)
 
     }
+
+
 }
