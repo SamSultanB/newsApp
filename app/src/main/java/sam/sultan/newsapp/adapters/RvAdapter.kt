@@ -3,6 +3,7 @@ package sam.sultan.newsapp.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import sam.sultan.newsapp.R
@@ -43,7 +44,10 @@ class RvAdapter: RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
     }
 
     fun setNewsList(newList: List<Article>){
+        val diffUtil = DiffUtils(newsList, newList)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
         newsList = newList
+        diffResult.dispatchUpdatesTo(this)
     }
 
 }
