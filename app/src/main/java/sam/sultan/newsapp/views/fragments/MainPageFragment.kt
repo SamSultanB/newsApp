@@ -11,13 +11,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import sam.sultan.newsapp.R
 import sam.sultan.newsapp.adapters.RvAdapter
 import sam.sultan.newsapp.databinding.FragmentMainPageBinding
+import sam.sultan.newsapp.models.database.NewsDataBase
 import sam.sultan.newsapp.models.entities.Article
+import sam.sultan.newsapp.models.repositories.NewsRepository
 import sam.sultan.newsapp.models.viewModels.NewsViewModel
+import sam.sultan.newsapp.models.viewModels.ViewModelFactory
 import sam.sultan.newsapp.utils.Resource
 
 
@@ -25,7 +29,8 @@ class MainPageFragment : Fragment() {
 
     lateinit var binding: FragmentMainPageBinding
     var adapter = RvAdapter()
-    val viewModel = NewsViewModel()
+    private lateinit var viewModel: NewsViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +43,11 @@ class MainPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModelSetUp()
         if(isNetworkConnected(requireContext())){
             viewModel.getAllNews()
         }else{
+            hideProgressBar()
             Toast.makeText(requireContext(), "Please, connect to the Internet", Toast.LENGTH_LONG).show()
         }
 
@@ -49,6 +55,9 @@ class MainPageFragment : Fragment() {
         binding.mainRv.layoutManager = LinearLayoutManager(requireContext())
         binding.mainRv.adapter = adapter
         adapter.clickToDetails = { detailsPage(it) }
+        binding.refreshBtn.setOnClickListener {
+            viewModel.getAllNews()
+        }
     }
 
     private fun detailsPage(article: Article){
@@ -69,6 +78,12 @@ class MainPageFragment : Fragment() {
                 Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun viewModelSetUp(){
+        val dao = NewsDataBase.getDatabase(requireContext()).newsDao()
+        val repository = NewsRepository(dao)
+        viewModel = ViewModelProvider(this, ViewModelFactory(repository)).get(NewsViewModel::class.java)
     }
 
     private fun showProgressBar(){

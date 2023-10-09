@@ -34,21 +34,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchBar"
+        <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            app:queryHint="Search..."
-            android:background="@color/white"
+            app:cardCornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/favoritesBtn"
             app:layout_constraintStart_toEndOf="@+id/refreshBtn"
             app:layout_constraintTop_toTopOf="parent">
 
-        </androidx.appcompat.widget.SearchView>
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:queryHint="Search..."
+                android:background="@color/white"/>
+
+        </androidx.cardview.widget.CardView>
 
         <ImageButton
             android:id="@+id/favoritesBtn"
